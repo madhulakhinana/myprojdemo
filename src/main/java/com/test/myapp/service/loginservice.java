@@ -9,7 +9,7 @@ public class loginservice {
     public String login(logindto logindto) {
         String response = null;
         if (logindto.getLoginId().equalsIgnoreCase("madhu")) {
-            response = "oks";
+            response = "ok";
         }
         return response;
     }
