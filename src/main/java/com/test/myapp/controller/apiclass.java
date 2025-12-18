@@ -1,0 +1,22 @@
+package com.test.myapp.controller;
+
+import com.test.myapp.dto.logindto;
+import com.test.myapp.service.loginservice;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/service")
+public class apiclass {
+
+    @Autowired
+    loginservice loginService;
+
+    @PostMapping("/url")
+    public ResponseEntity<String> login(@RequestBody logindto logindto){
+       return ResponseEntity.ok(loginService.login(logindto));
+    }
+
+
+}
