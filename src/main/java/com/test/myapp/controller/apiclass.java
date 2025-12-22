@@ -1,5 +1,6 @@
 package com.test.myapp.controller;
 
+import com.test.myapp.dto.Registration;
 import com.test.myapp.dto.logindto;
 import com.test.myapp.service.loginservice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,14 @@ public class apiclass {
     @Autowired
     loginservice loginService;
 
-    @PostMapping("/url")
+    @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody logindto logindto){
        return ResponseEntity.ok(loginService.login(logindto));
+    }
+
+    @PostMapping("/register")
+    public Registration registration(@RequestBody Registration registration){
+        return registration;
     }
 
 
