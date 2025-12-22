@@ -1,5 +1,6 @@
 package com.test.myapp.controller;
 
+import com.test.myapp.Entity.login;
 import com.test.myapp.dto.Registration;
 import com.test.myapp.dto.logindto;
 import com.test.myapp.service.loginservice;
@@ -16,7 +17,8 @@ public class apiclass {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody logindto logindto){
-       return ResponseEntity.ok(loginService.login(logindto));
+        String loginresp= loginService.login(logindto);
+       return ResponseEntity.ok(loginresp);
     }
 
     @PostMapping("/register")
