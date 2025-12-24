@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Registrationentity {
+    @Id
     private String firstname;
     private String lastname;
     private String password;
