@@ -1,6 +1,6 @@
 package com.test.myapp.Entity;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 @Entity
 public class Registrationentity {
