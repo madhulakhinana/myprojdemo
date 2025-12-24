@@ -26,8 +26,6 @@ public class loginservice {
             if(resp.equals(logindto.getPassword())){
                 statusDTO.setStatus("success");
             }
-        }else{
-            statusDTO.setStatus("success");
         }
         return statusDTO;
 
