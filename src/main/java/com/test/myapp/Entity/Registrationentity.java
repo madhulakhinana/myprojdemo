@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 @Entity
 public class Registrationentity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String firstname;
     private String lastname;
     private String password;

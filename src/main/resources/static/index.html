@@ -2,46 +2,130 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>File Upload</title>
+    <title>ONBOARDING</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
+          font-family: "Segoe UI", Arial, sans-serif;
+          background: #f4f6f9;
+          height: 100vh;
+          margin: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
+
+        .upload-container {
+          background: #fff;
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          text-align: center;
+          width: 400px;
+          position: relative;
+        }
+
+        /* Home logo (top-left) */
+        .home-logo {
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          font-size: 22px;
+          color: #0078d7; /* blue color */
+          cursor: pointer;
+          text-decoration: none;
+        }
+
+        h2 {
+          margin-bottom: 20px;
+          color: #0078d7;
+          text-transform: uppercase;
+        }
+
+        select, input[type="file"], button {
+          margin-top: 10px;
+          padding: 10px;
+          width: 100%;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          font-size: 14px;
+        }
+
         button {
-            margin-top: 10px;
+          background: #28a745;
+          color: #fff;
+          border: none;
+          cursor: pointer;
+          transition: background 0.3s ease;
         }
+
+        button:hover {
+          background: #218838;
+        }
+
         #result {
-            margin-top: 15px;
-            font-weight: bold;
+          margin-top: 20px;
+          font-weight: bold;
+          color: #333;
         }
     </style>
 </head>
 <body>
 
-<h2>Upload File</h2>
+<div class="upload-container">
+    <!-- Home logo (blue) -->
+    <a href="welcome.html" class="home-logo">🏠</a>
 
-<input type="file" id="fileInput" />
-<br />
-<button onclick="uploadFile()">Upload</button>
+    <h2>ONBOARDING</h2>
 
-<div id="result"></div>
+    <label for="fileType">Select File Type:</label>
+    <select id="fileType">
+        <option value=".txt">Text (.txt)</option>
+        <option value=".json">JSON (.json)</option>
+        <option value=".pdf">PDF (.pdf)</option>
+        <option value=".yaml">YAML (.yaml)</option>
+    </select>
+
+    <input type="file" id="fileInput" accept=".txt,.json,.pdf,.yaml" />
+
+    <button onclick="uploadFile()">Upload</button>
+
+    <div id="result"></div>
+</div>
 
 <script>
-    function uploadFile() {
-        const fileInput = document.getElementById("fileInput");
-        const result = document.getElementById("result");
+    let alreadyUploaded = false;
 
-        if (fileInput.files.length === 0) {
-            result.innerText = "Please select a file first.";
-            return;
-        }
+    async function uploadFile() {
+      const fileInput = document.getElementById("fileInput");
+      const fileTypeSelect = document.getElementById("fileType");
+      const result = document.getElementById("result");
 
-        const file = fileInput.files[0];
-        const formData = new FormData();
-        formData.append("file", file); // must match @RequestParam("file")
+      // If user clicks Upload again after first upload → go to welcome.html
+      if (alreadyUploaded) {
+        window.location.href = "welcome.html";
+        return;
+      }
 
-        fetch("http://localhost:9025/service/upload", {
+      if (fileInput.files.length === 0) {
+        result.innerText = "⚠️ Please select a file first.";
+        result.style.color = "red";
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const selectedType = fileTypeSelect.value;
+
+      // Validate file extension
+      if (!file.name.endsWith(selectedType)) {
+        result.innerText = `❌ Invalid file type. Please upload a ${selectedType} file.`;
+        result.style.color = "red";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      fetch("http://localhost:8080/service/upload", {
             method: "POST",
             body: formData
         })
@@ -52,10 +136,15 @@
             return response.text();
         })
         .then(data => {
-            result.innerText = data;
+            result.innerText = "✅ " + data;
+            result.style.color = "green";
+
+            // Mark that one upload has already happened
+            alreadyUploaded = true;
         })
         .catch(error => {
-            result.innerText = error.message;
+            result.innerText = "❌ " + error.message;
+            result.style.color = "red";
         });
     }
 </script>
