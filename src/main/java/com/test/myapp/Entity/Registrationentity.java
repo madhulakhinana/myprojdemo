@@ -5,11 +5,15 @@ import jakarta.persistence.*;
 @Entity
 public class Registrationentity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true)
+    private String emailid;
     private String firstname;
     private String lastname;
     private String password;
     private String phoneno;
-    private String emailid;
+
 
     public String getFirstname() {
         return firstname;
@@ -49,5 +53,16 @@ public class Registrationentity {
 
     public void setEmailid(String emailid) {
         this.emailid = emailid;
+    }
+
+    @Override
+    public String toString() {
+        return "Registrationentity{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneno='" + phoneno + '\'' +
+                ", emailid='" + emailid + '\'' +
+                '}';
     }
 }

@@ -1,6 +1,9 @@
 package com.test.myapp.dto;
 
+import org.springframework.data.annotation.Id;
+
 public class Registration {
+    @Id
     private String firstname;
     private String lastname;
     private String password;

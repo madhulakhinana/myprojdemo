@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+          font-family: "Segoe UI", Arial, sans-serif;
+          background: #f4f6f9;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+        }
+
+        .login-container {
+          background: #fff;
+          padding: 40px;
+          border-radius: 10px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          text-align: center;
+          width: 400px;
+          position: relative;
+        }
+
+        /* Home logo */
+        .home-logo {
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          font-size: 24px;
+          color: #0078d7; /* blue color */
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        h2 {
+          margin-bottom: 20px;
+          color: #0078d7;
+          text-transform: uppercase;
+        }
+
+        input[type="text"], input[type="password"], button {
+          margin-top: 10px;
+          padding: 10px;
+          width: 100%;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          font-size: 14px;
+        }
+
+        .password-wrapper {
+          position: relative;
+          width: 100%;
+        }
+
+        .toggle-password {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          cursor: pointer;
+          font-size: 14px;
+          color: #0078d7;
+        }
+
+        button {
+          background: #28a745;
+          color: #fff;
+          border: none;
+          cursor: pointer;
+          transition: background 0.3s ease;
+          margin-top: 15px;
+        }
+
+        button:hover {
+          background: #218838;
+        }
+
+        #result {
+          margin-top: 20px;
+          font-weight: bold;
+          color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <!-- Home logo linking to welcome.html -->
+    <a href="welcome.html" class="home-logo">🏠</a>
+
+    <h2>Login</h2>
+
+    <input type="text" id="loginId" placeholder="Login ID" required />
+
+    <div class="password-wrapper">
+        <input type="password" id="password" placeholder="Password" required />
+        <span class="toggle-password" onclick="togglePassword()">👁️</span>
+    </div>
+
+    <button onclick="doLogin()">Login</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    function togglePassword() {
+      const passwordField = document.getElementById("password");
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+      } else {
+        passwordField.type = "password";
+      }
+    }
+
+    async function doLogin() {
+      const loginId = document.getElementById("loginId").value;
+      const password = document.getElementById("password").value;
+      const result = document.getElementById("result");
+
+      if (!loginId || !password) {
+        result.innerText = "⚠️ Please enter both Login ID and Password.";
+        result.style.color = "red";
+        return;
+      }
+
+      try {
+        const response = await fetch("https://myprojdemo-2.onrender.com/service/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ loginId, password })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          if (data.status && data.status.toLowerCase() === "success") {
+            result.innerText = "✅ Login successful!";
+            result.style.color = "green";
+
+            // Redirect to details.html
+            setTimeout(() => {
+              window.location.href = "details.html";
+            }, 1000);
+          } else {
+            result.innerText = "❌ Login failed: " + (data.message || "Invalid credentials");
+            result.style.color = "red";
+          }
+        } else {
+          result.innerText = "❌ Login failed: " + response.statusText;
+          result.style.color = "red";
+        }
+      } catch (error) {
+        result.innerText = "❌ Error: " + error.message;
+        result.style.color = "red";
+      }
+    }
+</script>
+
+</body>
+</html>
