@@ -23,6 +23,9 @@ public class apiclass {
     @Autowired
     regservice regservice;
 
+    @GetMapping("/") public String home() { return "index";
+    }
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody logindto logindto){
         String loginresp= loginService.login(logindto);
