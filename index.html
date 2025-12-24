@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        button {
+            margin-top: 10px;
+        }
+        #result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Upload File</h2>
+
+<input type="file" id="fileInput" />
+<br />
+<button onclick="uploadFile()">Upload</button>
+
+<div id="result"></div>
+
+<script>
+    function uploadFile() {
+        const fileInput = document.getElementById("fileInput");
+        const result = document.getElementById("result");
+
+        if (fileInput.files.length === 0) {
+            result.innerText = "Please select a file first.";
+            return;
+        }
+
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file); // must match @RequestParam("file")
+
+        fetch("http://localhost:9025/service/upload", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Upload failed");
+            }
+            return response.text();
+        })
+        .then(data => {
+            result.innerText = data;
+        })
+        .catch(error => {
+            result.innerText = error.message;
+        });
+    }
+</script>
+
+</body>
+</html>
