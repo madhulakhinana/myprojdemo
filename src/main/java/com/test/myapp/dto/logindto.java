@@ -3,6 +3,7 @@ package com.test.myapp.dto;
 public class logindto {
     private String loginId;
     private String password;
+    private String test;
 
     public String getPassword() {
         return password;
